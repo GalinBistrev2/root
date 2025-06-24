@@ -16,6 +16,8 @@
 #include <RooFit/CodegenContext.h>
 
 #include <RooAddPdf.h>
+#include <RooCategory.h>
+#include <RooMultiPdf.h>
 #include <RooAddition.h>
 #include <RooBernstein.h>
 #include <RooBifurGauss.h>
@@ -240,6 +242,52 @@ void codegenImpl(RooMultiVarGaussian &arg, CodegenContext &ctx)
    ctx.addResult(&arg,
                  ctx.buildCall(mathFunc("multiVarGaussian"), arg.xVec().size(), arg.xVec(), arg.muVec(), covISpan));
 }
+void codegenImpl(RooMultiPdf &arg, CodegenContext &ctx)
+{
+	
+	// ctx.addResult(&arg, ctx.buildCall(mathFunc("multipdf"), arg.idx, arg.pdf, arg.npdfs );
+    std::string indexExpr = ctx.getResult(arg.indexCategory());
+
+    int numPdfs = arg.getNumPdfs();
+    std::string expr;
+
+    for (int i = 0; i < numPdfs; ++i) {
+        RooAbsPdf* pdf = arg.getPdf(i);
+        std::string pdfExpr = ctx.getResult(*pdf);
+
+        expr += "(" + indexExpr + " == " + std::to_string(i) + " ? (" + pdfExpr + ") : ";
+    }
+
+    expr += "0.0";
+    expr += std::string(numPdfs, ')');  // Close all ternary operators
+
+    ctx.addResult(&arg, expr);
+    
+    
+
+ 
+
+  
+}
+
+
+void codegenImpl(RooCategory &arg, CodegenContext &ctx) {
+    int idx = ctx.observableIndexOf(&arg);
+    if (idx < 0) {
+      
+        idx = 1; 
+        ctx.addVecObs(arg.GetName(), idx);
+    }
+
+    // Debug output to help trace observable index mapping
+    std::cout << "[codegen debug] Category '" << arg.GetName() << "' mapped to obs[" << idx << "]\n";
+
+    
+    std::string result =  std::to_string(arg.getCurrentIndex()) ;
+    ctx.addResult(&arg, result);
+}
+
+
 
 void codegenImpl(RooAddition &arg, CodegenContext &ctx)
 {

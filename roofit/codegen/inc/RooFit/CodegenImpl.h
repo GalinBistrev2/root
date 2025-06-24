@@ -18,6 +18,7 @@
 #include <type_traits>
 
 class ParamHistFunc;
+class RooCategory;
 class PiecewiseInterpolation;
 class RooAbsArg;
 class RooAbsReal;
@@ -36,6 +37,7 @@ class RooExtendPdf;
 class RooFormulaVar;
 class RooGamma;
 class RooGaussian;
+class RooMultiPdf;
 class RooGenericPdf;
 class RooHistFunc;
 class RooHistPdf;
@@ -81,6 +83,7 @@ void codegenImpl(ParamHistFunc &arg, CodegenContext &ctx);
 void codegenImpl(PiecewiseInterpolation &arg, CodegenContext &ctx);
 void codegenImpl(RooAbsArg &arg, CodegenContext &ctx);
 void codegenImpl(RooAddPdf &arg, CodegenContext &ctx);
+void codegenImpl(RooCategory &arg, CodegenContext &ctx) ;
 void codegenImpl(RooAddition &arg, CodegenContext &ctx);
 void codegenImpl(RooBernstein &arg, CodegenContext &ctx);
 void codegenImpl(RooBifurGauss &arg, CodegenContext &ctx);
@@ -105,6 +108,7 @@ void codegenImpl(RooParamHistFunc &arg, CodegenContext &ctx);
 void codegenImpl(RooPoisson &arg, CodegenContext &ctx);
 void codegenImpl(RooPolyVar &arg, CodegenContext &ctx);
 void codegenImpl(RooPolynomial &arg, CodegenContext &ctx);
+void codegenImpl(RooMultiPdf &arg , CodegenContext &ctx);
 void codegenImpl(RooProduct &arg, CodegenContext &ctx);
 void codegenImpl(RooRatio &arg, CodegenContext &ctx);
 void codegenImpl(RooRealIntegral &arg, CodegenContext &ctx);

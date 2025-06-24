@@ -21,6 +21,13 @@ public:
    inline double getCorrection() const { return cFactor * static_cast<RooAbsReal *>(corr.at(x))->getVal(); }
    inline RooAbsPdf *getCurrentPdf() const { return getPdf(getCurrentIndex()); }
    int getNumPdfs() const { return c.size(); }
+   
+  inline const RooCategoryProxy& indexCategory() const { return x; } //public use of  RooCategory , needed for externla code
+   //inline int idx;
+   //inline int pdf;
+   //inline int nPdfs;
+   
+   
    void setCorrectionFactor(PenaltyScheme penal) { cFactor = penal == AIC ? 1.0 : 0.5; }
    void setCorrectionFactor(double penal) { cFactor = penal; }
    inline int getCurrentIndex() const { return static_cast<int>(x); }

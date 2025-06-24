@@ -160,6 +160,15 @@ inline double chebychev(double *coeffs, unsigned int nCoeffs, double x_in, doubl
    return sum;
 }
 
+
+inline double multipdf(int idx, std::initializer_list<double> pdfs)
+{
+    if (idx < 0 || idx >= static_cast<int>(pdfs.size())){
+        throw std::out_of_range("Invalid PDF index");
+        
+	}
+    return *(pdfs.begin() + idx);
+}
 inline double constraintSum(double const *comp, unsigned int compSize)
 {
    double sum = 0;
