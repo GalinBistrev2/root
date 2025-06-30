@@ -26,7 +26,7 @@ public:
    //inline int idx;
    //inline int pdf;
    //inline int nPdfs;
-   
+   inline const RooListProxy& getPdfList() const {return c ;}
    
    void setCorrectionFactor(PenaltyScheme penal) { cFactor = penal == AIC ? 1.0 : 0.5; }
    void setCorrectionFactor(double penal) { cFactor = penal; }

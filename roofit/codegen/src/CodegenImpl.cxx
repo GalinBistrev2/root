@@ -242,13 +242,27 @@ void codegenImpl(RooMultiVarGaussian &arg, CodegenContext &ctx)
    ctx.addResult(&arg,
                  ctx.buildCall(mathFunc("multiVarGaussian"), arg.xVec().size(), arg.xVec(), arg.muVec(), covISpan));
 }
+
+
 void codegenImpl(RooMultiPdf &arg, CodegenContext &ctx)
 {
-	
-	// ctx.addResult(&arg, ctx.buildCall(mathFunc("multipdf"), arg.idx, arg.pdf, arg.npdfs );
-    std::string indexExpr = ctx.getResult(arg.indexCategory());
+	int numPdfs = arg.getNumPdfs();
 
-    int numPdfs = arg.getNumPdfs();
+
+   //MathFunc call
+
+if (numPdfs > 2 ){  // the value of this number should be discussed.Beyound a certain number of indices MathFunc call becomes more efficient.
+	ctx.addResult(&arg, ctx.buildCall(mathFunc("multipdf"), arg.indexCategory() , arg.getPdfList() ));
+
+    std::cout <<  "MathFunc call used\n";
+
+}
+else {
+
+//Ternary nested expression
+  std::string indexExpr = ctx.getResult(arg.indexCategory());
+
+    //int numPdfs = arg.getNumPdfs();
     std::string expr;
 
     for (int i = 0; i < numPdfs; ++i) {
@@ -262,15 +276,17 @@ void codegenImpl(RooMultiPdf &arg, CodegenContext &ctx)
     expr += std::string(numPdfs, ')');  // Close all ternary operators
 
     ctx.addResult(&arg, expr);
-    
-    
+     std::cout <<  "Ternary expression call used \n";
+   }
+
+
 
  
 
   
 }
 
-
+//RooCategory index added.
 void codegenImpl(RooCategory &arg, CodegenContext &ctx) {
     int idx = ctx.observableIndexOf(&arg);
     if (idx < 0) {

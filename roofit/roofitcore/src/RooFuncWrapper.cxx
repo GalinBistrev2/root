@@ -250,7 +250,7 @@ void RooFuncWrapper::writeDebugMacro(std::string const &filename) const
    // Remove duplicated declared functions
    for (std::string const &name : _collectedFunctions) {
       if (seenFunctions.count(name) > 0) {
-         continue;
+         continue; //needed in order to set the index to constant in the RooMultiPdf
       }
       seenFunctions.insert(name);
       std::unique_ptr<TInterpreterValue> v = gInterpreter->MakeInterpreterValue();

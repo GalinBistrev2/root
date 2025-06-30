@@ -20,7 +20,7 @@
 
 #include <algorithm>
 #include <cmath>
-
+#include <stdexcept>
 namespace RooFit {
 namespace Detail {
 namespace MathFuncs {
@@ -161,13 +161,14 @@ inline double chebychev(double *coeffs, unsigned int nCoeffs, double x_in, doubl
 }
 
 
-inline double multipdf(int idx, std::initializer_list<double> pdfs)
+inline double multipdf(int idx, double const *pdfs)
 {
-    if (idx < 0 || idx >= static_cast<int>(pdfs.size())){
+   /* if (idx < 0 || idx >= static_cast<int>(pdfs.size())){
         throw std::out_of_range("Invalid PDF index");
         
 	}
-    return *(pdfs.begin() + idx);
+   */
+    return pdfs[idx];
 }
 inline double constraintSum(double const *comp, unsigned int compSize)
 {
